@@ -12,7 +12,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+// $posts=Post::all();
+$posts=Post::orderBy('id','desc')->get();
+return view('posts.index',compact('posts'))->with('i',1);
     }
 
     /**
@@ -20,7 +22,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+          return view('posts.create');
     }
 
     /**
@@ -28,7 +30,25 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'detail' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $input = $request->all();
+//dd($input);
+
+        if ($image = $request->file('image')) {
+            $destinationPath = 'images/';
+            $postImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $postImage);
+            $input['image'] = "$postImage";
+        }
+
+        Post::create($input);
+
+        return redirect()->route('post.index')->with('success','Post Create Successfully.');
     }
 
     /**
@@ -60,6 +80,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('post.index')->with('success','Post Deleted Successfully');
     }
 }
