@@ -48,7 +48,7 @@ return view('posts.index',compact('posts'))->with('i',1);
 
         Post::create($input);
 
-        return redirect()->route('post.index')->with('success','Post Create Successfully.');
+        return redirect()->route('posts.index')->with('success','Post Create Successfully.');
     }
 
     /**
@@ -56,7 +56,7 @@ return view('posts.index',compact('posts'))->with('i',1);
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show',compact('post'));
     }
 
     /**
@@ -64,7 +64,8 @@ return view('posts.index',compact('posts'))->with('i',1);
      */
     public function edit(Post $post)
     {
-        //
+//      dd($post);
+return view('posts.edit', compact('post'));
     }
 
     /**
@@ -72,7 +73,28 @@ return view('posts.index',compact('posts'))->with('i',1);
      */
     public function update(Request $request, Post $post)
     {
-        //
+
+            $request->validate([
+                'name' => 'required',
+                'detail' => 'required',
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            $input = $request->all();
+
+            if ($image = $request->file('image')) {
+                $destinationPath = 'images/';
+                $postImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $image->move($destinationPath, $postImage);
+                $input['image'] = "$postImage";
+            }else{
+                unset($input['image']);
+            }
+
+            $post->update($input);
+
+            return redirect()->route('posts.index')->with('success','Post Update Successfully');
+
     }
 
     /**
@@ -82,6 +104,6 @@ return view('posts.index',compact('posts'))->with('i',1);
     {
         $post->delete();
 
-        return redirect()->route('post.index')->with('success','Post Deleted Successfully');
+        return redirect()->route('posts.index')->with('success','Post Deleted Successfully');
     }
 }

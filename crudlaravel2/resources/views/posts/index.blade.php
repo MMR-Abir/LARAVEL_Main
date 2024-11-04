@@ -12,7 +12,7 @@
 
 @endif
 <h1>Post List</h1>
-<a href="{{route('post.create')}}" class="btn btn-success float-right">New Post</a>
+<a href="{{route('posts.create')}}" class="btn btn-success float-right">New Post</a>
 <table class="table table-stripped">
 
 <tr>
@@ -32,10 +32,14 @@
 <td>{{$post->name}} </td>
 <td>{{$post->detail}} </td>
 <td><img src="/images/{{$post->image}}" alt="" width="100"/> </td>
-<td>Edit</a>|
 
 
-<form action="{{route('post.destroy', $post->id)}}" method="post">
+
+<td><a href="{{route('posts.edit', $post->id)}}" class="btn btn-info">EDIT</a> <br>
+<a href="{{route('posts.show', $post->id)}}" class="btn btn-success">SHOW</a>
+
+
+<form action="{{route('posts.destroy', $post->id)}}" method="post">
 @csrf
 @method('DELETE')
 <button type="submit" class="btn btn-danger">DELETE</button>
