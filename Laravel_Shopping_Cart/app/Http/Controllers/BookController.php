@@ -34,6 +34,7 @@ class BookController extends Controller
         return redirect()->back()->with('success', 'Book has been added to cart!');
     }
 
+
     public function bookCart()
     {
         return view('cart');
@@ -61,4 +62,80 @@ class BookController extends Controller
             session()->flash('success', 'Book added to cart.');
         }
     }
+
+
+public function checkout(){
+
+
+return view('checkout');
+}
+
+
+
+
+public function addProduct($id)
+    {
+        $book = Book::findOrFail($id);
+        $cart = session()->get('cart', []);
+         if(isset($cart[$id])) {
+            // if(in_array($id,$cart)) {
+
+            $cart[$id]['quantity']++;
+        } else {
+            $cart[$id] = [
+                "name" => $book->name,
+                "quantity" => 1,
+                "price" => $book->price,
+                "image" => $book->image
+            ];
+        }
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Book has been added to cart!');
+    }
+
+
+
+    public function minusProduct($id)
+    {
+        $book = Book::findOrFail($id);
+        $cart = session()->get('cart', []);
+         if(isset($cart[$id])) {
+            // if(in_array($id,$cart)) {
+
+            $cart[$id]['quantity']--;
+        } else {
+            $cart[$id] = [
+                "name" => $book->name,
+                "quantity" => 1,
+                "price" => $book->price,
+                "image" => $book->image
+            ];
+        }
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Book has been added to cart!');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

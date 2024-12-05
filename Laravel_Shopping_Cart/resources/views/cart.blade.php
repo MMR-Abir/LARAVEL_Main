@@ -18,6 +18,8 @@
         @if(session('cart'))
             @foreach(session('cart') as $id => $details)
 
+
+
                 <tr rowId="{{ $id }}">
                     <td data-th="Product">
                         <div class="row">
@@ -29,7 +31,10 @@
                     </td>
                     <td data-th="Price">${{ $details['price'] }}</td>
                     <td  data-th="Price">  <input class="edit-cart-info" type="text" value="{{ $details['quantity'] }}">     </td>
-                    <td>  </td>
+
+                    <td> <a href="{{route('addProduct.to.cart', $id)}}" class="btn btn-success" >+</a>|
+                       <a href="{{route('minusProduct.to.cart', $id)}}" class="btn btn-success" >-</a>
+                </td>
 
 
                     <td data-th="Subtotal" class="text-center">$ {{$details['price'] * $details['quantity']}} </td>
@@ -37,6 +42,8 @@
                         <a class="btn btn-outline-danger btn-sm delete-product"><i class="fa fa-trash-o"></i></a>
                     </td>
                 </tr>
+
+
             @endforeach
         @endif
     </tbody>
@@ -44,7 +51,7 @@
         <tr>
             <td colspan="5" class="text-right">
                 <a href="{{ url('/home') }}" class="btn btn-primary"><i class="fa fa-angle-left"></i> Continue Shopping</a>
-                <button class="btn btn-danger">Checkout</button>
+                <a href="{{ url('/checkout') }}" class="btn btn-warning"> Check Out  <i class="fa fa-angle-right"></i></a>
             </td>
         </tr>
     </tfoot>
