@@ -37,7 +37,8 @@
 
                 </tr>
 
-                @php $total +=$details['price'] * $details['quantity']
+                @php $total += $details['price'] * $details['quantity'];
+                $total = round($total);
                 @endphp
 
             @endforeach
